@@ -1,9 +1,8 @@
-Flask
-gunicorn
+setuptools>=65
+wheel
+pip>=23
 numpy>=1.21,<1.26
 opencv-python-headless
 Pillow
-imageio
 scikit-image
-easyocr==1.6.1
-shapely
+matplotlib
