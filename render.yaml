@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: auto-text-editor
+    name: auto-text-editor-web
     env: python
-    buildCommand: ""
-    startCommand: gunicorn wsgi:app
+    buildCommand: pip install -r requirements.txt
+    startCommand: python wsgi.py
     plan: free
