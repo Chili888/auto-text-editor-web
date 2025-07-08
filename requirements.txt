@@ -1,6 +1,6 @@
 Flask
 gunicorn
-numpy
+numpy>=1.21,<1.26
 opencv-python-headless
 Pillow
 imageio
