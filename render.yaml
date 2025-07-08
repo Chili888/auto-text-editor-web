@@ -5,3 +5,4 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: python wsgi.py
     plan: free
+buildCommand: PIP_NO_BUILD_ISOLATION=0 pip install -r requirements.txt
