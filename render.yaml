@@ -2,6 +2,6 @@ services:
   - type: web
     name: auto-text-editor-web
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn wsgi:app
     plan: free
+    buildCommand: PIP_NO_BUILD_ISOLATION=1 pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app
