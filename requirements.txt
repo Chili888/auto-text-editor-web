@@ -1,2 +1,5 @@
-flask
-gunicorn
+Flask
+easyocr
+pillow
+opencv-python
+numpy

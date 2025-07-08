@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>无痕图像文字替换工具</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; background: #f7f7f7; }
+    h2 { color: #333; }
+    form { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px #ddd; }
+    input[type="text"] { width: 70%; padding: 6px; margin-right: 10px; }
+    input[type="file"] { margin-bottom: 10px; }
+    button { padding: 6px 14px; cursor: pointer; }
+    .box-list { margin-top: 20px; }
+    .box-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #ccc; }
+    .preview-img { max-width: 100%; margin-top: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+  <h2>📷 上传截图图片并替换指定文字</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required>
+    <button type="submit">上传并识别</button>
+  </form>
+
+  {% if image %}
+    <h3>原图预览：</h3>
+    <img src="{{ url_for('static', filename='uploads/' + image) }}" class="preview-img">
+
+    <div class="box-list">
+      <h3>可替换的文字区域：</h3>
+      {% for box in boxes %}
+        <div class="box-item">
+          <strong>文字 {{ loop.index }}：</strong> {{ box.text }}
+          <form method="POST" action="/modify">
+            <input type="hidden" name="index" value="{{ box.index }}">
+            <input type="hidden" name="filename" value="{{ image }}">
+            <input type="text" name="new_text" placeholder="输入替换文字" required>
+            <button type="submit">替换并下载</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>图像文字修改器</title>
+</head>
+<body>
+    <h1>上传图像文件</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
+        <button type="submit">识别并显示文字</button>
+    </form>
+
+    {% if image %}
+        <hr>
+        <h2>识别结果（点击替换）：</h2>
+        <img src="{{ url_for('static', filename='uploads/' + image) }}" style="max-width:600px;"><br><br>
+
+        {% for box in boxes %}
+            <form method="POST" action="/modify">
+                <input type="hidden" name="index" value="{{ box.index }}">
+                <input type="hidden" name="filename" value="{{ image }}">
+                <strong>原文：</strong> {{ box.text }}<br>
+                <input type="text" name="new_text" placeholder="输入替换文字" required>
+                <button type="submit">替换并下载</button>
+                <hr>
+            </form>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
